@@ -7,7 +7,7 @@ public class Doctor {
 
     private double consultationFee;
 
-    private int id;// Ensure unique doctor ID tracking
+    private int id;
     private List<Patient> assignedPatients;
 
 

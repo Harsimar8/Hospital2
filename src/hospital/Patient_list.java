@@ -24,11 +24,11 @@ public class Patient_list {
         PNode node = new PNode(patient);
         if (head == null) {
             head = node;
-            tail = node; // First node becomes both head & tail
+            tail = node;
         } else {
             tail.next = node;
             node.prev = tail;
-            tail = node; // Move tail to the new node
+            tail = node;
         }
     }
 
@@ -51,7 +51,7 @@ public class Patient_list {
             temp = temp.next;
         }
         System.out.println("❌ Patient ID " + patientId + " not found in list.");
-        return null; // ✅ Allows caller to handle missing patient gracefully
+        return null;
     }
 
 
@@ -64,7 +64,7 @@ public class Patient_list {
         PNode current = head, prev = null;
 
         while (current != null) {
-            if (current.patient.getId() == Integer.parseInt(patientId)) { // Match found
+            if (current.patient.getId() == Integer.parseInt(patientId)) {
                 if (prev == null) {
                     head = current.next;
                 } else {

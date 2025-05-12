@@ -20,11 +20,7 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
 
 
-
-
-
-
-            BillingManager billingManager = new BillingManager(); // Ensure BillingManager is initialized
+            BillingManager billingManager = new BillingManager();
 
             loadDoctorsFromDatabase(con, dlist);
             loadPatientsFromDatabase(con, plist);
@@ -80,7 +76,7 @@ public class Main {
         return email.matches(emailRegex);
     }
 
-    // Password validation method (Minimum 8 characters)
+    // Password validation method
     public static boolean isValidPassword(String password) {
         return password.length() >= 8 && password.length() <= 20; // Ensures between 8 and 20 characters
     }
@@ -88,7 +84,7 @@ public class Main {
 
     public static void registerUser(Connection con, Scanner scanner) {
         try {
-            System.out.println("-----Registration-----");
+            System.out.println("-Registration--");
             System.out.println("Enter name, email, password, and role (Admin/Doctor/Nurse/Patient):");
 
             String name = scanner.nextLine().trim();
@@ -98,19 +94,19 @@ public class Main {
 
             // Ensure email format is correct
             if (!isValidEmail(email)) {
-                System.out.println("Invalid email format! Please enter a valid email.");
+                System.out.println("Invalid email format");
                 return;
             }
 
-            // Ensure password meets security standards
+
             if (!isValidPassword(pass)) {
-                System.out.println("Password must be at least 8 characters long.");
+                System.out.println("Password should be at least 8 characters");
                 return;
             }
 
-            // Prevent multiple admins
+
             if (role.equalsIgnoreCase("Admin") && adminExists(con)) {
-                System.out.println("Admin account already exists. Registration denied.");
+                System.out.println("Admin account already exists");
                 return;
             }
 
@@ -132,7 +128,7 @@ public class Main {
                 System.out.println(role + " registration successful!");
             }
         } catch (Exception e) {
-            System.out.println("Error: " + e);
+
         }
     }
 
@@ -140,19 +136,19 @@ public class Main {
     public static void showmenu(Scanner scanner, String userRole, Patient_list plist, Doctors_list dlist, Checkup_list clist, BillingManager billingManager,Connection con) {
         while (true) {
             if (userRole.equals("Doctor")) {
-                showDoctorRestrictedMenu(scanner, dlist); //  doctors restricted menu
+                showDoctorRestrictedMenu(con ,scanner,dlist); //  doctors restricted menu
                 return;
             }
 
-            System.out.println("---Main Menu----");
+            System.out.println("Main Menu");
 
             if (userRole.equals("Admin") || userRole.equals("Nurse")) {
-                System.out.println("1. Patients");
+                System.out.println("1 Patients");
             }
 
             if (userRole.equals("Admin")) {
-                System.out.println("2. Doctors");
-                System.out.println("3. Billing & Accounting");
+                System.out.println("2 Doctors");
+                System.out.println("3 Billing & Accounting");
             }
 
             System.out.println("4. Logout");
@@ -164,12 +160,12 @@ public class Main {
             switch (choice) {
                 case 1:
                     if (userRole.equals("Doctor")) {
-                        showDoctorRestrictedMenu(scanner, dlist);
+                        showDoctorRestrictedMenu(con ,scanner,dlist);
                     }
                     else if(userRole.equals("Admin") || userRole.equals("Nurse")) {
                         showPatientMenu(scanner, userRole, plist, dlist,con);
                     } else {
-                        System.out.println("Access Denied!");
+                        System.out.println("Access Denied");
                     }
                     break;
 
@@ -185,7 +181,7 @@ public class Main {
                     if (userRole.equals("Admin")) {
                         showBillingMenu(scanner, userRole, billingManager, plist, dlist);
                     } else {
-                        System.out.println("Access Denied! Only Admins can access billing.");
+                        System.out.println("Access Denied");
                     }
                     break;
 
@@ -202,14 +198,14 @@ public class Main {
 
     public static void loginUser(Connection con, Scanner sc, Patient_list plist, Doctors_list dlist, Checkup_list clist ,BillingManager billingManager) {
         try {
-            System.out.println("----Login-----");
+            System.out.println("Login");
             System.out.println("Enter email and password:");
             String email = sc.next().trim();
             String pass = sc.next().trim();
 
-            // Validate email format before querying
+
             if (!isValidEmail(email)) {
-                System.out.println("Invalid email format! Please enter a valid email.");
+                System.out.println("Invalid email format");
                 return;
             }
 
@@ -225,7 +221,7 @@ public class Main {
                 if (role.equals("Admin")) {
                     showmenu(sc, role, plist, dlist, clist ,billingManager,con);
                 } else if (role.equals("Doctor")) {
-                    showDoctorRestrictedMenu(sc,dlist);
+                    showDoctorRestrictedMenu(con ,sc,dlist);
                 } else if (role.equals("Nurse") || role.equals("Patient")) {
                     showPatientMenu(sc, role, plist, dlist,con);
                 } else {
@@ -253,11 +249,11 @@ public class Main {
                 double consultationFee = rs.getDouble("consultation_fee");
 
                 Doctor doctor = new Doctor(doctorId, name, specialty, consultationFee);
-                dlist.Insert(doctor); // ✅ Add doctor to linked list
+                dlist.Insert(doctor);
             }
 
         } catch (SQLException e) {
-            System.out.println("Error loading doctors: " + e.getMessage());
+
         }
     }
 
@@ -342,17 +338,17 @@ public class Main {
             statement.setString(1, doctorId);
             int rowsDeleted = statement.executeUpdate();
             if (rowsDeleted > 0) {
-                System.out.println("✅ Doctor deleted from database!");
+                System.out.println("Doctor deleted from database!");
             } else {
-                System.out.println("⚠️ Doctor ID not found in database.");
+                System.out.println("ID not found in database.");
             }
         } catch (SQLException e) {
-            System.out.println("Error deleting doctor from database: " + e.getMessage());
+
         }
     }
 
     public static void deletePatient(Patient_list plist, Scanner scanner, Connection con) {
-        System.out.println("Enter patient ID to delete:");
+        System.out.println("Enter ID to delete:");
         String patientId = scanner.nextLine();
 
         int patt = Integer.parseInt(patientId);
@@ -369,14 +365,14 @@ public class Main {
             statement.setInt(1, patt);
             int rowsDeleted = statement.executeUpdate();
             if (rowsDeleted > 0) {
-                System.out.println("✅ Patient deleted from database!");
+
                 loadPatientsFromDatabase(con, plist);
 
             } else {
-                System.out.println("⚠️ Patient ID not found in database.");
+                System.out.println(" Patient not found in database.");
             }
         } catch (SQLException e) {
-            System.out.println("Error deleting patient from database: " + e.getMessage());
+
         }
     }
 
@@ -396,8 +392,8 @@ public class Main {
         }
     }
 
-    public static void assignPatientToDoctor(Scanner scanner, Doctors_list dlist, Patient_list plist) {
-        System.out.println("Enter doctor ID:");
+    public static void assignPatientToDoctor(Connection con, Scanner scanner, Doctors_list dlist, Patient_list plist) {
+        System.out.println("Enter doctor ID");
         int doctorId = Integer.parseInt(scanner.nextLine());
 
         Doctor doctor = dlist.getDoctorById(String.valueOf(doctorId));
@@ -407,23 +403,33 @@ public class Main {
         }
 
         while (true) {
-            System.out.println("Enter patient ID:");
+            System.out.println("Enter patient ID");
             int patientId = Integer.parseInt(scanner.nextLine());
 
             Patient patient = plist.searchById(String.valueOf(patientId));
             if (patient == null) {
-                System.out.println("Invalid patient ID. Try again.");
-                continue; // Go back and ask again
+                System.out.println("Invalid patient ID");
+                continue;
             }
 
-            System.out.println("Enter priority (3 = Emergency, 2 = Intermediate, 1 = Normal):");
+            System.out.println("Enter priority 3 = Emergency, 2 = Intermediate, 1 = Normal");
             int priority = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             patient.setPriority(priority);
             doctor.addPatient(patient);
 
+
             String insertQuery = "INSERT INTO doctor_patient (doctor_id, patient_id, priority) VALUES (?, ?, ?)";
+            try (PreparedStatement statement = con.prepareStatement(insertQuery)) {
+                statement.setInt(1, doctorId);
+                statement.setInt(2, patientId);
+                statement.setInt(3, priority);
+                statement.executeUpdate();
+                System.out.println(" Patient ID " + patientId + " assigned to Dr. " + doctor.getName() + " in database with level " + priority);
+            } catch (SQLException e) {
+                System.out.println("Not");
+            }
 
             System.out.println("Do you want to assign another patient? (yes/no):");
             String choice = scanner.nextLine();
@@ -434,25 +440,6 @@ public class Main {
     }
 
 
-    public static void showPatientsForDoctor(Scanner scanner, Doctors_list dlist) {
-        System.out.println("Enter doctor ID:");
-        String doctorId = scanner.nextLine();
-
-        Doctor doctor = dlist.getDoctorById(doctorId);
-        if (doctor == null) {
-            System.out.println("Doctor not found.");
-            return;
-        }
-
-        // Sort patients by priority
-        List<Patient> sortedPatients = new ArrayList<>(doctor.getPatients());
-        sortedPatients.sort((p1, p2) -> Integer.compare(p2.getPriority(), p1.getPriority()));
-
-        System.out.println("Patients for Dr. " + doctor.getName() + " (sorted by priority):");
-        for (Patient p : sortedPatients) {
-            System.out.println("Name: " + p.getName() + ", Priority: " + p.getPriority());
-        }
-    }
 
 
     public static void addPatients(Scanner scanner, Patient_list plist, Connection con) {
@@ -476,13 +463,13 @@ public class Main {
             statement.setString(2, contact);
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("Patient added to database successfully!");
+                System.out.println("Patient added to database ");
             } else {
-                System.out.println("Failed to add patient to database.");
+                System.out.println("Failed to add patient ");
             }
         } catch (SQLException e) {
-            System.out.println("Error adding patient to database: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Error adding patiennt" + e.getMessage());
+
         }
     }
 
@@ -569,31 +556,39 @@ public class Main {
         }
     }
 
-    public static void viewAssignedPatients(Scanner scanner, Doctors_list dlist) {
+    public static void viewAssignedPatients(Connection con, Scanner scanner , Doctors_list dlist) {
         System.out.println("Enter your Doctor ID:");
-        String doctorId = scanner.nextLine(); // Assuming doctor IDs are stored as Strings
+        int doctorId = Integer.parseInt(scanner.nextLine()); // Assuming doctor IDs are integers
 
-        Doctor doctor = dlist.getDoctorById(doctorId);
-        if (doctor == null) {
-            System.out.println("Doctor not found.");
-            return;
-        }
+        // ✅ Query assigned patients from the database
+        String query = "SELECT p.patient_id, p.name, p.contact, dp.priority " +
+                "FROM patient p " +
+                "INNER JOIN doctor_patient dp ON p.patient_id = dp.patient_id " +
+                "WHERE dp.doctor_id = ? " +
+                "ORDER BY dp.priority DESC"; // Sort by priority automatically
 
-        List<Patient> assignedPatients = doctor.getPatients();
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setInt(1, doctorId);
+            ResultSet rs = statement.executeQuery();
 
-        if (assignedPatients.isEmpty()) {
-            System.out.println("No patients assigned to Dr. " + doctor.getName());
-            return;
-        }
+            boolean foundPatients = false;
+            System.out.println("Patients for Doctor ID " + doctorId + " (sorted by priority):");
+            while (rs.next()) {
+                System.out.println("Name: " + rs.getString("name") +
+                        ", Contact: " + rs.getString("contact") +
+                        ", Priority: " + rs.getInt("priority"));
+                foundPatients = true;
+            }
 
-        // Sort by priority
-        assignedPatients.sort((p1, p2) -> Integer.compare(p2.getPriority(), p1.getPriority()));
-
-        System.out.println("Patients for Dr. " + doctor.getName() + " (sorted by priority):");
-        for (Patient p : assignedPatients) {
-            System.out.println("Name: " + p.getName() + ", Priority: " + p.getPriority());
+            if (!foundPatients) {
+                System.out.println("⚠️ No patients assigned to this doctor.");
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error retrieving assigned patients: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
 
 
     public static Patient findPatientById(Patient_list plist, int patientId) {
@@ -690,7 +685,7 @@ public class Main {
 
     public static void showPatientMenu(Scanner scanner, String userRole, Patient_list plist, Doctors_list dlist,Connection con) {
         while (true) {
-            System.out.println("----Patient Menu-----");
+            System.out.println("Patient Menu");
 
             if (userRole.equals("Admin") || userRole.equals("Nurse")) {
                 System.out.println("1. Search for Patient by ID");
@@ -734,7 +729,7 @@ public class Main {
 
     public static void showDoctorMenu(Scanner scanner, String userRole, Doctors_list dlist, Patient_list plist,Connection con) {
         while (true) {
-            System.out.println("----Doctor Menu-----");
+            System.out.println("Doctor Menu");
             System.out.println("1. Add Doctor");
             System.out.println("2. Search Doctor by Specialty");
             System.out.println("3. Search Doctor by ID");
@@ -770,12 +765,12 @@ public class Main {
                     else System.out.println("Access Denied!");
                     break;
                 case 6:
-                    if (userRole.equals("Admin")) assignPatientToDoctor(scanner, dlist, plist);
+                    if (userRole.equals("Admin")) assignPatientToDoctor(con ,scanner, dlist, plist);
                     else System.out.println("Access Denied!");
                     break;
                 case 7:
-                    if (userRole.equals("Doctor")) showPatientsForDoctor(scanner, dlist);
-                    else if(userRole.equals("Admin")) showPatientsForDoctor(scanner,dlist);
+                    if (userRole.equals("Doctor")) viewAssignedPatients(con,scanner,dlist);
+                    else if(userRole.equals("Admin")) viewAssignedPatients(con,scanner,dlist);
                     else System.out.println("Access Denied!");
                     break;
                 case 8:
@@ -786,7 +781,7 @@ public class Main {
         }
     }
 
-    public static void showDoctorRestrictedMenu(Scanner scanner, Doctors_list dlist) {
+    public static void showDoctorRestrictedMenu(Connection con,Scanner scanner,Doctors_list dlist) {
         System.out.println("----Doctor Menu-----");
         System.out.println("1. View Assigned Patients");
         System.out.println("2. Logout");
@@ -796,7 +791,7 @@ public class Main {
 
         switch (choice) {
             case 1:
-                viewAssignedPatients(scanner, dlist);
+                viewAssignedPatients(con,scanner,dlist);
                 break;
             case 2:
                 System.out.println("Logging Out...");
