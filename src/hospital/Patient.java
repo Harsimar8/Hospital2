@@ -2,7 +2,7 @@ package  hospital;
 import java.util.*;
 
 public class Patient {
-
+ // intializing all variables
     private String  name, contact;
     private int id;
     private int priority;
@@ -10,6 +10,7 @@ public class Patient {
     private List<Billing> billingHistory;
 
 
+    // default constructor
     public Patient() {
         this.id = 0;
         this.name = "";
@@ -19,6 +20,7 @@ public class Patient {
     }
 
 
+    // Parameterised constructor
     public Patient(int id, String name, String contact) {
         this.id = id;
         this.name = name;
@@ -27,7 +29,7 @@ public class Patient {
         this.billingHistory = new ArrayList<>();
     }
 
-
+      // GETTERS AND SETTERS
     public int getPatientId() {
         return patientId;
     }
@@ -69,22 +71,10 @@ public class Patient {
     }
 
     // Billing Methods
-    public void addBill(Billing bill) {
-        billingHistory.add(bill);
-    }
+
 
     public List<Billing> getBillingHistory() {
         return billingHistory;
-    }
-
-    public List<Billing> getUnpaidBills() {
-        List<Billing> unpaidBills = new ArrayList<>();
-        for (Billing bill : billingHistory) {
-            if (bill.getPaymentStatus().equals("Pending")) {
-                unpaidBills.add(bill);
-            }
-        }
-        return unpaidBills;
     }
 
     @Override

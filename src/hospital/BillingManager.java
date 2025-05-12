@@ -33,7 +33,7 @@ public class BillingManager {
 
         Billing bill = new Billing(patient, doctor, disease, medication, amount, "Pending");
         bills.add(bill);
-        patient.addBill(bill);
+
         System.out.println("Bill generated successfully for " + patient.getName());
     }
 

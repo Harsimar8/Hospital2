@@ -1,5 +1,6 @@
 package hospital;
 
+// intializing all variables
 public class Billing {
     private static int billCounter = 0;
     private int billId;
@@ -11,6 +12,7 @@ public class Billing {
     private String paymentStatus;
 
 
+    // parameterised constructor
     public Billing(Patient patient, Doctor doctor, String disease, String medication, double amount, String paymentStatus) {
         this.billId = ++billCounter;
         this.patient = patient;

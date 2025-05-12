@@ -10,7 +10,7 @@ public class Doctor {
     private int id;
     private List<Patient> assignedPatients;
 
-
+// default constructors
     public Doctor() {
         this.id = 0;
         this.name = "";
@@ -20,6 +20,7 @@ public class Doctor {
     }
 
 
+    // parametised constructor
     public Doctor(int id, String name, String specialty, double consultationFee) {
         this.id = id;
         this.name = name;
@@ -29,6 +30,7 @@ public class Doctor {
     }
 
 
+    // GETTES AND SETTERS
     public int getId() { return id; }
     public void setId(int  id) { this.id = id; }
 
